@@ -101,6 +101,32 @@ while x:
     else: 
      print("Password o nickname errati")
 
+#esercizio 3 modificato con regsitrazione solo una volta
 
+id=0 
+x = True #--> entra per forza in quanto true 
+registrato=False
+# Registrazione una sola volta
+nome = input("Inserisci tuo nickname: ")
+password = input("Inserisci la tua password: ")
 
+if nome == "" or password == "":
+    print("Non hai valorizzato il campo. Riprova.")
+else:
+    registrato = True
+    id += 1
+
+# Se la registrazione è andata a buon fine, si entra nella fase login
+if registrato:
+    while x:
+        nome_inserito = input("Inserisci tuo nickname: ")
+        password_inserito = input("Inserisci la tua password: ")
+
+        if nome_inserito == nome and password_inserito == password:
+            print("Sei loggato")
+            x = False
+        else:
+            print("Password o nickname errati. Riprova.")
+
+        
         
