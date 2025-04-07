@@ -74,33 +74,33 @@ else:
         print("Indice non valido.")
 
 
+
 #esercizio 3 
 
 id=0 
 x = True #--> entra per forza in quanto true 
 #ciclo 
 while x:
- nome= ""
+ nome=""
  password=""
 #registrazione
-if x: 
-        nome= input("inserisci tuo nickname:")
-        password= input("inserisci la tua password:")
-        id +=1
-        print(nome)
-        print(password)
+ nome= input("inserisci tuo nickname:")
+ password= input("inserisci la tua password:")
+ id +=1
 #login 
-if nome == "" or password == "":
+ if nome == "" or password == "":
         print("non hai valorizzato il campo")
-else: 
+ else: 
     nome_inserito= input("inserisci tuo nickname:")
     password_inserito= input("inserisci la tua password:")
-if nome_inserito==nome and password_inserito==password:
+
+    if nome_inserito==nome and password_inserito==password:
      print("sei loggato")
      x=False
     
-else: 
-    print("Password o nickname errati")
+    else: 
+     print("Password o nickname errati")
+
 
 
         
