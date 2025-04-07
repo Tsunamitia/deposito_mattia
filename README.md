@@ -1,2 +1,2 @@
 # deposito_mattia
-Qui c'è la descrizione 
+Mi chiamo Mattia Malaterra, studente di corso di Python della Academy di Acus. 
