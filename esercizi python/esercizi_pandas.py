@@ -1,5 +1,6 @@
 import pandas as pd
-
+import numpy as np
+#Importo di un dataframe 
 file_path = 'dataset_persone_30.csv'
 # Leggi il file CSV
 df = pd.read_csv(file_path)
@@ -23,15 +24,35 @@ print("4. Statistiche descrittive:")
 print(tabella.describe())
 
 #5 identificare e rimuovere i duplicati
-print("5. Identificare:")
-duplicati = tabella.duplicated()
-if duplicati.any():
-    print("Ci sono duplicati")
-    print("cancello i duplicati")
-    tabella = tabella.drop_duplicates()
-    print("Duplicati rimossi")
-else:
-    print("Non ci sono duplicati")
+print("5. rimozione dei duplicati:")
+tabella=tabella.drop_duplicates()
+print("duplicati rimossi")
 print("\n")
+
 #6 sostituire i valori mancanti con la mediana della colonna
 print("6. Sostituire i valori mancanti con la mediana della colonna:")
+tabella["Età"].fillna(tabella["Età"].median(), inplace=True)
+tabella["Salario"].fillna(tabella["Salario"].median(), inplace=True)
+print("Valori mancanti sostituiti")
+print("\n")
+
+#7 aggiungere una nuova colonna "categoria età" che classifica le persone in base alla loro età
+print("7. Aggiungere una nuova colonna 'categoria età':")
+def categoria_eta(eta):
+
+    if eta < 18:
+        return 'Minorenne'
+    elif 18 <= eta < 65:
+        return 'Adulto'
+    else:
+        return 'Anziano'
+
+#creo una nuova colonna e applico la funzione
+tabella['categoria_eta'] = tabella['Età'].apply(categoria_eta)
+
+print("Colonna 'categoria eta' aggiunta")
+print(tabella[['Età', 'categoria_eta']].head(10))
+
+#salvo il file
+tabella.to_csv('dataset_persone_30_modificato.csv', index=False)
+print("\n")
