@@ -13,7 +13,7 @@ class Myarray:
 Array1=Myarray()
 
 Array1.aggiunta(0,10,50)
-\
+
 print("Array1: ", Array1.arr)
 
 #creo un array di 50 numeri casuali
