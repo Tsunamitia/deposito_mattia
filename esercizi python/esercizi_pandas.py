@@ -56,3 +56,4 @@ print(tabella[['Età', 'categoria_eta']].head(10))
 #salvo il file
 tabella.to_csv('dataset_persone_30_modificato.csv', index=False)
 print("\n")
+
