@@ -14,12 +14,12 @@ def crea_tabella():
             # Creazione del database
             if nome_db in tutti_i_database:
                 print("Il database esiste già.")
-                y = True
+                y = False
 
-            conn = sqlite3.connect(nome_db)
-            cur = conn.cursor()
-            print(f"Database {nome_db} creato con successo.")
-            y = False
+           conn = sqlite3.connect(nome_db)
+           cur = conn.cursor()
+           print(f"Database {nome_db} creato con successo.")
+           y = False
         # Verifica del database è già esistente interrompe il ciclo
         
             y = False
