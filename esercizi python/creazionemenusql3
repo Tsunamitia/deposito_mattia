@@ -3,8 +3,8 @@ import sqlite3
 
 def crea_tabella():
  tutti_i_database = []
- j=True
- while j:
+ 
+ while True:
     y= True
     while y:
         scelta = input("Vuoi creare un database? (si/no): ")
@@ -24,7 +24,7 @@ def crea_tabella():
         
             y = False
         else:
-            j= False
+            break
             
         
     scaletta = int(input("cosa si desidera fare?\n1. Creare una tabella\n2. Inserire un dato\n3. Aggiornare un dato\n4. Leggere i dati\n5.eliminare dati\n6. Uscire e salvare\n"))
