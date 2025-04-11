@@ -11,18 +11,18 @@ def crea_tabella():
         if scelta.lower() == "si":
             nome_db = input("Inserisci il nome del database(ricorda che il file deve finire con.db): ")
             tutti_i_database.append(nome_db)
-            # Creazione del database
+            # verifica del db se esiste gia 
+
             if nome_db in tutti_i_database:
                 print("Il database esiste già.")
                 y = False
-
-           conn = sqlite3.connect(nome_db)
-           cur = conn.cursor()
-           print(f"Database {nome_db} creato con successo.")
-           y = False
-        # Verifica del database è già esistente interrompe il ciclo
-        
-            y = False
+         else:# Creazione del database
+             conn = sqlite3.connect(nome_db)
+             cur = conn.cursor()
+             print(f"Database {nome_db} creato con successo.")
+             y = False 
+          
+       
         else:
             break
             
