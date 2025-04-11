@@ -1,0 +1,74 @@
+import sqlite3
+
+
+# Creazione della tabella
+
+
+def crea_tabella():
+ while True:
+    y= True
+    while y:
+        scelta = input("Vuoi creare un database? (si/no): ")
+        if scelta.lower() == "si":
+            nome_db = input("Inserisci il nome del database(ricorda che il file deve finire con.db): ")
+            # Creazione del database
+            conn = sqlite3.connect(nome_db)
+            cur = conn.cursor()
+            print(f"Database {nome_db} creato con successo.")
+            
+            y = False
+        elif nome_db>0:
+            print("Database già esistente.")
+            y = False
+        
+    scaletta = int(input("cosa si desidera fare?\n1. Creare una tabella\n2. Inserire un dato\n3. Aggiornare un dato\n4. Leggere i dati\n5.eliminare dati\n6. Uscire e salvare\n"))
+    if scaletta == 1:
+        nome_tabella = input("Inserisci il nome della tabella: ")
+        #scelta dei dati da parte dell'utente
+        nome_colonna = input("Inserisci il nome della colonna: ")
+        tipo_colonna = input("Inserisci il tipo della colonna (INTEGER, TEXT, FLOAT): ")
+        # Creazione della tabella   
+        cur.execute(f"CREATE TABLE IF NOT EXISTS {nome_tabella} (id INTEGER PRIMARY KEY AUTOINCREMENT, {nome_colonna} {tipo_colonna})")
+        print(f"Tabella {nome_tabella} creata con successo.")
+    elif scaletta == 2:
+        x=True
+        while x:
+            nome_colonna = input("Inserisci il nome della colonna: ")
+            valore_colonna = input("Inserisci il valore della colonna: ")
+            # Inserimento dei dati
+            cur.execute(f"INSERT INTO {nome_tabella} ({nome_colonna}) VALUES (?)", (valore_colonna,))
+            print(f"Dato {valore_colonna} inserito nella tabella {nome_tabella}.")
+            conn.commit()
+            scelta=input("Vuoi aggiurnare un altro dato? (si/no): ")
+            if scelta.lower() == "si":
+                continue
+            else:
+                x=False
+    elif scaletta == 3:
+     colonna_agg =(input("Inserisci la colonna che vuoi  aggiornare: "))
+     nuovo_nome = input("Inserisci il nuovo nome: ")
+     cur.execute(f"UPDATE {nome_tabella} SET nome = ? WHERE {colonna_agg} = ?", (nuovo_nome, colonna_agg))
+     conn.commit()
+     print("Nome aggiornato.")
+    elif scaletta == 4:
+        # Lettura dei dati
+        cur.execute(f"SELECT * FROM {nome_tabella}")
+        righe = cur.fetchall()
+        for riga in righe:
+            print(riga)
+    elif scaletta == 5 :
+        # Eliminazione dei dati
+        nome_colonna = input("Inserisci il nome della colonna: ")
+        dato_ele = (input("Inserisci il dato che vuoi eliminare: "))
+        cur.execute(f"DELETE FROM {nome_tabella} WHERE {nome_colonna} = ?", (dato_ele,))
+        print("Dato eliminato.")
+    elif scaletta == 6:
+        conn.commit()
+        conn.close()
+        print("Uscita e salvataggio dei dati.")
+        break
+    else :
+        print("Opzione non valida. Riprova.")
+
+print(crea_tabella())
+        
