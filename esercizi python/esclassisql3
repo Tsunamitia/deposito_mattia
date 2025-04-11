@@ -1,0 +1,117 @@
+import sqlite3
+import random
+
+# Lista di tutti i database
+tutti_i_database = []
+
+# Menu per la creazione del database
+def menu_di_creazionedb():
+    while True:
+        scelta = input("Vuoi creare un database? (si/no): ").strip().lower()
+        if scelta == "si":
+            nome_db = input("Inserisci il nome del database (es: miofile.db): ")
+            tutti_i_database.append(nome_db)
+            conn = sqlite3.connect(nome_db)
+            conn.close()
+            print(f"Database '{nome_db}' creato con successo.")
+            return nome_db
+        elif scelta == "no":
+            print("Nessun database creato.")
+            return None
+        else:
+            print("Risposta non valida. Inserisci 'si' o 'no'.")
+
+print("Benvenuto nel programma di gestione della libreria.")
+nome_db = menu_di_creazionedb()
+
+if not nome_db:
+    exit()
+
+
+# Classe Libreria
+class Libreria:
+    def __init__(self, nome_db):
+        self.nome_db = nome_db
+        self.conn = sqlite3.connect(nome_db)
+        self.cur = self.conn.cursor()
+        self.create_table()
+
+    def create_table(self):
+        self.cur.execute('''
+            CREATE TABLE IF NOT EXISTS libri (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                titolo TEXT NOT NULL,
+                autore TEXT NOT NULL
+            )
+        ''')
+        self.conn.commit()
+
+    def aggiungi_libri(self, lista_libri):
+        self.cur.executemany('''
+            INSERT INTO libri (titolo, autore)
+            VALUES (?, ?)
+        ''', lista_libri)
+        self.conn.commit()
+
+    def visualizza_libri(self):
+        self.cur.execute("SELECT * FROM libri")
+        libri = self.cur.fetchall()
+        for libro in libri:
+            print(libro)
+
+    def aggiungi_colonna_vendite(self):
+    # Verifica se la colonna 'vendite' esiste già
+     self.cur.execute("ALTER TABLE libri ADD COLUMN vendite INTEGER DEFAULT 0")
+     self.cur.execute('SELECT id FROM libri')
+     righe = self.cur.fetchall()
+
+     for (id_libro,) in righe:
+        vendite =random.randint(1, 100)
+        self.cur.execute('UPDATE libri SET vendite = ? WHERE id = ?', (vendite, id_libro))
+        self.conn.commit()
+
+
+# Inizializzo la libreria
+libro = Libreria(nome_db)
+
+# Menu di gestione
+def menu_di_libri():
+    while True:
+        try:
+            scelta = int(input("\nCosa vuoi fare?\n0. Creare la tabella\n1. Aggiungere libri\n2. Visualizzare i libri\n3. Aggiungere colonna vendite\n4. Uscire\nScelta: "))
+        except ValueError:
+            print("Inserisci un numero valido.")
+            continue
+
+        if scelta == 0:
+            libro.create_table()
+            print("Tabella 'libri' creata con successo.")
+
+        elif scelta == 1:
+            d = []
+            while True:
+                titolo = input("Titolo del libro: ")
+                autore = input("Autore del libro: ")
+                d.append((titolo, autore))
+                scelta2 = input("Vuoi aggiungere un altro libro? (si/no): ").strip().lower()
+                if scelta2 != "si":
+                    break
+            libro.aggiungi_libri(d)
+            print("Libri aggiunti con successo.")
+
+        elif scelta == 2:
+            print("Libri nella libreria:")
+            libro.visualizza_libri()
+
+        elif scelta == 3:
+            libro.aggiungi_colonna_vendite()
+            print("Colonna 'vendite' aggiunta (o aggiornata) con successo.")
+
+        elif scelta == 4:
+            print("Uscita dal programma.")
+            libro.conn.close()
+            break
+        else:
+            print("Scelta non valida.")
+
+menu_di_libri()
